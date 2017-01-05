@@ -77,12 +77,12 @@ describe Hubspot::Contact do
     end
   end
 
-  describe '.all' do
-    context 'all companies' do
+  describe '.recent' do
+    context 'recent companies' do
       cassette 'find_all_companies'
 
       it 'must get the companies list' do
-        companies = Hubspot::Company.all
+        companies = Hubspot::Company.recent
 
         expect(companies.size).to eql 20 # default page size
 
@@ -99,7 +99,7 @@ describe Hubspot::Contact do
       end
 
       it 'must filter only 2 copmanies' do
-        copmanies = Hubspot::Company.all(count: 2)
+        copmanies = Hubspot::Company.recent(count: 2)
         expect(copmanies.size).to eql 2
       end
     end
@@ -108,7 +108,7 @@ describe Hubspot::Contact do
       cassette 'find_all_recent_companies'
 
       it 'must get the companies list' do
-        companies = Hubspot::Company.all(recent: true)
+        companies = Hubspot::Company.recent(recent: true)
         expect(companies.size).to eql 20
 
         first, last = companies.first, companies.last
@@ -161,7 +161,7 @@ describe Hubspot::Contact do
     cassette "add_contact_to_company"
     let(:company){ Hubspot::Company.create!("company_#{Time.now.to_i}@example.com") }
     let(:contact){ Hubspot::Contact.create!("contact_#{Time.now.to_i}@example.com") }
-    subject { Hubspot::Company.all(recent: true).last }
+    subject { Hubspot::Company.recent(recent: true).last }
     context "with Hubspot::Contact instance" do
       before { company.add_contact contact }
       its(['num_associated_contacts']) { should eql '1' }

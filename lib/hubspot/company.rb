@@ -5,7 +5,8 @@ module Hubspot
   # {http://developers.hubspot.com/docs/methods/companies/companies-overview}
   #
   class Company
-    CREATE_COMPANY_PATH               = "/companies/v2/companies/"
+    COMPANY_PATH                      = "/companies/v2/companies/"
+    CREATE_COMPANY_PATH               = COMPANY_PATH
     RECENTLY_CREATED_COMPANIES_PATH   = "/companies/v2/companies/recent/created"
     RECENTLY_MODIFIED_COMPANIES_PATH  = "/companies/v2/companies/recent/modified"
     GET_COMPANY_BY_ID_PATH            = "/companies/v2/companies/:company_id"
@@ -24,7 +25,7 @@ module Hubspot
       # {http://developers.hubspot.com/docs/methods/companies/get_companies_created}
       # {http://developers.hubspot.com/docs/methods/companies/get_companies_modified}
       # @return [Array] Array of Hubspot::Company records
-      def all(opts={})
+      def recent(opts={})
         recently_updated = opts.delete(:recently_updated) { false }
         # limit = opts.delete(:limit) { 20 }
         # skip = opts.delete(:skip) { 0 }
