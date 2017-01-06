@@ -17,6 +17,11 @@ module Hubspot
     GET_COMPANY_CONTACTS_PATH         = "/companies/v2/companies/:company_id/contacts"
 
     class << self
+      def all(opts={})
+        response = Hubspot::Connection.get_json(COMPANY_PATH, opts)
+        response['companies'].map { |c| new(c) }
+      end
+
       # Find all companies by created date (descending)
       # @param opts [Hash] Possible options are:
       #    recently_updated [boolean] (for querying all accounts by modified time)
