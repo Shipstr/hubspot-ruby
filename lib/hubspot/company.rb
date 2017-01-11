@@ -18,8 +18,13 @@ module Hubspot
 
     class << self
       def all(opts={})
-        response = Hubspot::Connection.get_json(COMPANY_PATH, opts)
-        response['companies'].map { |c| new(c) }
+        [].tap do |companies|
+          begin
+            response = Hubspot::Connection.get_json(COMPANY_PATH, opts)
+            companies.concat(response['companies'].map { |c| new(c) })
+            opts[:offset] = response.fetch('offset', 0)
+          end while response.fetch('has-more', false)
+        end
       end
 
       # Find all companies by created date (descending)
